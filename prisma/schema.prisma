@@ -1,0 +1,80 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id            String         @id @default(ulid())
+  email         String         @unique
+  name          String
+  password      String
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  refreshTokens RefreshToken[]
+  notes         Note[]
+  tasks         Task[]
+}
+
+model RefreshToken {
+  id        String   @id @default(ulid())
+  token     String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  expiresAt DateTime
+}
+
+model Note {
+  id        String   @id @default(ulid())
+  title     String?
+  content   String
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Task {
+  id          String    @id @default(ulid())
+  title       String
+  description String?
+  priority    Priority  @default(NONE)
+  userId      String
+  user        User      @relation(fields: [userId], references: [id])
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  subTask     SubTask[]
+}
+
+model SubTask {
+  id          String    @id @default(ulid())
+  title       String
+  description String?
+  priority    Priority  @default(NONE)
+  status      Status    @default(BACKLOG)
+  startDate   DateTime?
+  dueDate     DateTime?
+  taskId      String
+  task        Task      @relation(fields: [taskId], references: [id])
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+enum Priority {
+  NONE
+  LOW
+  MEDIUM
+  HIGH
+}
+
+enum Status {
+  BACKLOG
+  TO_DO
+  ON_PROGRESS
+  DONE
+  CANCELLED
+}
