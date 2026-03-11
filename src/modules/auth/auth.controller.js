@@ -1,4 +1,3 @@
-import { StrictMode } from "react";
 import {
   loginService,
   logoutService,
