@@ -28,10 +28,10 @@ export const loginUser = async ({ email, password }) => {
   const user = await prisma.user.findUnique({
     where: { email },
   });
-  if (!user) throw new Error("Invalid Credentials");
+  if (!user) throw new Error("Email or Password Invalid");
 
   const isMatch = await comparePassword(password, user.password);
-  if (!isMatch) throw new Error("Invalid Credentials");
+  if (!isMatch) throw new Error("Email or Password Invalid");
 
   return {
     id: user.id,

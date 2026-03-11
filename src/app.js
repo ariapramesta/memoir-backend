@@ -4,6 +4,7 @@ import helmet from "helmet";
 import morgan from "morgan";
 import dotenv from "dotenv";
 import apiRoutes from "./routes/index.js";
+import { errorHandler } from "./middleware/error.js";
 
 dotenv.config();
 
@@ -23,5 +24,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api", apiRoutes);
+
+app.use(errorHandler);
 
 export default app;
