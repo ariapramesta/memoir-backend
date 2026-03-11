@@ -3,8 +3,9 @@ import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
 import dotenv from "dotenv";
+import cookieParser from "cookie-parser";
 import apiRoutes from "./routes/index.js";
-import { errorHandler } from "./middleware/error.js";
+import { errorHandler } from "./middleware/error.middleware.js";
 
 dotenv.config();
 
@@ -18,6 +19,7 @@ app.use(
 );
 app.use(morgan("dev"));
 app.use(express.json());
+app.use(cookieParser());
 
 app.get("/", (req, res) => {
   res.json({ message: "Welcome to Memoir API" });

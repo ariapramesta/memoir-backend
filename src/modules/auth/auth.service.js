@@ -1,5 +1,5 @@
 import { prisma } from "../../lib/prisma.js";
-import { comparePassword, hashPassword } from "../../utils/hash.js";
+import { comparePassword, hashPassword } from "../../utils/bcrypt.js";
 
 export const registerUser = async ({ email, name, password }) => {
   const existingUser = await prisma.user.findFirst({ where: { email } });
